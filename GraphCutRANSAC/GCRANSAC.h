@@ -1,6 +1,6 @@
 #pragma once
 
-#include <opencv2\highgui\highgui.hpp>
+#include <opencv2/features2d.hpp>
 #include "GCoptimization.h"
 #include "prosac_sampler.h"
 
@@ -620,7 +620,11 @@ Score GCRANSAC<ModelEstimator, Model>::GetScore(const cv::Mat &points, const Mod
 
 	std::vector<Score> process_scores(process_number, { 0,0 });
 
+#if defined(_WIN32) || defined(_WIN64)
 	concurrency::parallel_for(0, process_number, [&](int process)
+#else
+    for (int process = 0; process < process_number; ++process)
+#endif
 	{
 		if (store_inliers)
 			process_inliers[process].reserve(step_size);
@@ -641,7 +645,10 @@ Score GCRANSAC<ModelEstimator, Model>::GetScore(const cv::Mat &points, const Mod
 				process_scores[process].J += dist;
 			}
 		}
-	});
+	}
+#if defined(_WIN32) || defined(_WIN64)
+	);
+#endif
 
 	for (int i = 0; i < process_number; ++i)
 	{

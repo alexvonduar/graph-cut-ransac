@@ -1,28 +1,36 @@
 // VisionFrameWork.cpp : Defines the entry point for the console application.
 //
 
+#if defined(_WIN32) || defined(_WIN64)
 #include "stdafx.h"
+#endif
 
 #include <sstream>
 #include <fstream>
 #include <vector>
 #include <set>
-#include <opencv2\highgui\highgui.hpp>
-#include <opencv2\features2d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/features2d.hpp>
 #include "opencv2/xfeatures2d.hpp"
 #include <functional>
 #include <algorithm>
 #include "GCRANSAC.h"
+#if defined(_WIN32) || defined(_WIN64)
 #include <ppl.h>
+#endif
 #include <ctime>
 #include "line_estimator.cpp"
 #include "essential_estimator.cpp"
 #include "fundamental_estimator.cpp"
 #include "homography_estimator.cpp"
 
-#include <direct.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#if defined(_WIN32) || defined(_WIN64)
+#include <direct.h>
+#else
+#define _mkdir(x) mkdir(x, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
+#endif
 
 struct stat info;
 

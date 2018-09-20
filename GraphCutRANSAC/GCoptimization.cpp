@@ -8,7 +8,9 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#if defined(_WIN32) || defined(_WIN64)
 #include <ppl.h>
+#endif
 
 // will leave this one just for the laughs :)
 //#define olga_assert(expr) assert(!(expr))

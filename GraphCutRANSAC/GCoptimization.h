@@ -106,6 +106,7 @@
 #endif
 
 #include <cstddef>
+#include <cfloat>
 #include "energy.h"
 #include "graph.cpp"
 #include "maxflow.cpp"

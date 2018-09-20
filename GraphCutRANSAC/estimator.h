@@ -37,6 +37,8 @@
 
 #include <vector>
 
+#include <opencv2/opencv.hpp>
+
 namespace theia
 {
 	// Templated class for estimating a model for RANSAC. This class is purely a
@@ -98,11 +100,17 @@ namespace theia
 			const Model& model) const 
 		{
 			std::vector<double> residuals(data.size());
+#if defined(_WIN32) || defined(_WIN64)
 			concurrency::parallel_for(0, (int)data.size(), [&](int i)
-			//for (int i = 0; i < data.size(); i++) 
+#else
+			for (int i = 0; i < data.size(); i++)
+#endif
 			{
 				residuals[i] = Error(data[i], model);
-			});
+			}
+#if defined(_WIN32) || defined(_WIN64)
+			);
+#endif
 			return residuals;
 		}
 
@@ -115,9 +123,12 @@ namespace theia
 			std::vector<int> inliers;
 			inliers.reserve(data.size());
 
-			vector<bool> isInlier(data.size(), false);
+			std::vector<bool> isInlier(data.size(), false);
+#if defined(_WIN32) || defined(_WIN64)
 			concurrency::parallel_for(0, (int)data.size(), [&](int i)
-			//for (int i = 0; i < data.size(); i++)
+#else
+			for (int i = 0; i < data.size(); i++)
+#endif
 			{
 				isInlier[i] = Error(data[i], model) < error_threshold;
 
@@ -125,7 +136,10 @@ namespace theia
 				{
 					inliers.push_back(i);
 				}*/
-			});
+			}
+#if defined(_WIN32) || defined(_WIN64)
+			);
+#endif
 
 			for (int i = 0; i < data.size(); ++i)
 				if (isInlier[i])

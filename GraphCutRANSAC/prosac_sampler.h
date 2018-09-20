@@ -40,6 +40,7 @@
 #include <chrono>
 #include <random>
 #include <vector>
+#include <iostream>
 
 #include "sampler.h"
 #include "random.h"
